@@ -1,0 +1,34 @@
+{
+    "example_docker_app": {
+        "name": "example_docker_app",
+        "directory": "/var/www/applications/example-app",
+        "secret_token": "your_github_webhook_secret_here",
+        "target_branch": "refs/heads/main",
+        "commands": [
+            ["docker", "pull", "your-registry/your-image:latest"],
+            ["docker", "compose", "down"],
+            ["docker", "compose", "up", "-d"],
+            ["echo", "Docker Image Deployed Successfully"]
+        ],
+        "notifications": {
+            "email": "your-email@example.com",
+            "slack_webhook": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
+            "mattermost_webhook": "https://mattermost.yourdomain.com/hooks/your-webhook-id"
+        }
+    },
+    "proj2": {
+        "name": "proj2",
+        "directory": "/var/www/html/proj2",
+        "secret_token": "Proj2_Secret_Token",
+        "target_branch": "refs/heads/proj2-branch",
+        "commands": [
+            ["git", "reset", "--hard", "origin/proj2-branch"],
+            ["git", "pull", "origin", "proj2-branch"],
+            ["echo", "Post-pull command for Proj2"]
+        ],
+        "notifications": {
+            "email": "admin2@example.com",
+            "mattermost_webhook": "https://mattermost.example.com/hooks/project2-webhook"
+        }
+    }
+}
