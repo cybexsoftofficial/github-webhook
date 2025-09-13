@@ -1,6 +1,6 @@
 {
-    "example_docker_app": {
-        "name": "example_docker_app",
+    "your-project-name": {
+        "name": "your-project-name",
         "directory": "/var/www/applications/example-app",
         "secret_token": "your_github_webhook_secret_here",
         "target_branch": "refs/heads/main",
@@ -16,8 +16,8 @@
             "mattermost_webhook": "https://mattermost.yourdomain.com/hooks/your-webhook-id"
         }
     },
-    "proj2": {
-        "name": "proj2",
+    "your-project-name-2": {
+        "name": "your-project-name-2",
         "directory": "/var/www/html/proj2",
         "secret_token": "Proj2_Secret_Token",
         "target_branch": "refs/heads/proj2-branch",

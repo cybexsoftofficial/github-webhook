@@ -94,12 +94,46 @@ class ProjectConfig(BaseModel):
         return v
 
 async def send_slack(message: str, webhook_url: str):
-    """Send notification to Slack."""
+    """Send notification to Slack with rich formatting."""
     if not SLACK_TOKEN or not webhook_url:
         logger.warning("Slack configuration incomplete, skipping Slack notification")
         return
 
-    payload = {"text": message}
+    # Parse the message to extract project name, status, and details
+    lines = message.split('\n')
+    project_info = lines[0].split(' - ')
+    project_name = project_info[0].replace('Webhook for ', '')
+    status = project_info[1].replace('Status: ', '')
+    details = '\n'.join(lines[2:])
+
+    # Create color-coded attachments based on status
+    color = '#36a64f' if status == 'Success' else '#ff0000' if status == 'Failed' else '#808080'
+
+    payload = {
+        "attachments": [{
+            "color": color,
+            "title": f"Webhook Notification: {project_name}",
+            "fields": [
+                {
+                    "title": "Status",
+                    "value": status,
+                    "short": True
+                },
+                {
+                    "title": "Timestamp",
+                    "value": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "short": True
+                },
+                {
+                    "title": "Details",
+                    "value": f"```{details}```" if details else "No details available",
+                    "short": False
+                }
+            ],
+            "footer": "GitHub Webhook Service",
+        }]
+    }
+
     headers = {"Authorization": f"Bearer {SLACK_TOKEN}", "Content-Type": "application/json"}
 
     try:
@@ -111,12 +145,34 @@ async def send_slack(message: str, webhook_url: str):
         logger.error(f"Failed to send Slack notification: {str(e)}")
 
 async def send_mattermost(message: str, webhook_url: str):
-    """Send notification to Mattermost."""
+    """Send notification to Mattermost with rich formatting."""
     if not webhook_url:
         logger.warning("Mattermost webhook URL not provided, skipping Mattermost notification")
         return
 
-    payload = {"text": message}
+    # Parse the message to extract project name, status, and details
+    lines = message.split('\n')
+    project_info = lines[0].split(' - ')
+    project_name = project_info[0].replace('Webhook for ', '')
+    status = project_info[1].replace('Status: ', '')
+    details = '\n'.join(lines[2:])
+
+    # Create a formatted message using Mattermost Markdown
+    formatted_message = f"""
+### :bell: Webhook Notification: {project_name}
+
+**Status**: {':white_check_mark:' if status == 'Success' else ':x:' if status == 'Failed' else ':grey_question:'} {status}
+**Time**: {datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+
+#### Details:
+```
+{details}
+```
+---
+*GitHub Webhook Service*
+"""
+
+    payload = {"text": formatted_message}
     headers = {"Content-Type": "application/json"}
 
     try:
