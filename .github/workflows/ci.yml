@@ -32,9 +32,7 @@ jobs:
         echo '{"test-project": {"name": "test", "directory": "./", "secret_token": "test", "target_branch": "refs/heads/main", "commands": [["echo", "test"]], "notifications": {}}}' > projects.json
         
         # Create a test .env file
-        echo "WEBHOOK_HOST=0.0.0.0" > .env
-        echo "WEBHOOK_PORT=8000" >> .env
-        echo "WEBHOOK_CONFIG=projects.json" >> .env
+        cp .env.example .env
         
         # Test server startup (run in background and kill after 5 seconds)
         python server.py & sleep 5 && kill $!
