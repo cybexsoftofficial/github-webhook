@@ -1,6 +1,8 @@
 # GitHub Webhook Deployment Service
 
-![Cybexsoft Consultancy Services](https://cybexsoft.com/assets/images/logo.png)
+[![CI](https://github.com/cybexsoftofficial/github-webhook/actions/workflows/ci.yml/badge.svg)](https://github.com/cybexsoftofficial/github-webhook/actions/workflows/ci.yml)
+
+![Cybexsoft Consultancy Services](https://cybexsoft.com/img/logo.png)
 
 Developed and maintained by [Cybexsoft Consultancy Services](https://cybexsoft.com)
 
@@ -31,7 +33,7 @@ A robust webhook service that automates deployments and notifications for multip
 
 1. Clone the repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/cybexsoftofficial/github-webhook
 cd github-webhook
 ```
 
